@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="一个轻量、专注的 Todo List 页面。" />
+    <title>Todo List · Focus Board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="eyebrow">FOCUS BOARD <span aria-hidden="true">✦</span></p>
+          <h1>今天要完成什么？</h1>
+          <p class="hero-description">
+            把脑海里的下一步写下来，让重要的事情保持清晰。
+          </p>
+        </div>
+        <div class="hero-orbit" aria-hidden="true">
+          <span class="orbit orbit-one"></span>
+          <span class="orbit orbit-two"></span>
+          <span class="orbit-dot"></span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Todo List">
+        <div class="stats-grid" aria-label="任务统计">
+          <article class="stat-card">
+            <span class="stat-label">全部任务</span>
+            <strong id="total-count">0</strong>
+          </article>
+          <article class="stat-card stat-card-accent">
+            <span class="stat-label">已完成</span>
+            <strong id="completed-count">0</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">待完成</span>
+            <strong id="pending-count">0</strong>
+          </article>
+        </div>
+
+        <form class="add-form" id="todo-form">
+          <label class="sr-only" for="todo-input">新任务</label>
+          <input
+            id="todo-input"
+            name="todo"
+            type="text"
+            maxlength="120"
+            autocomplete="off"
+            placeholder="例如：完成课程作业"
+            required
+          />
+          <button class="primary-button" type="submit">
+            <span aria-hidden="true">＋</span>
+            添加任务
+          </button>
+        </form>
+
+        <div class="list-heading">
+          <div>
+            <p class="section-kicker">MY TASKS</p>
+            <h2>任务清单</h2>
+          </div>
+          <div class="filter-group" role="group" aria-label="筛选任务">
+            <button class="filter-button is-active" type="button" data-filter="all">全部</button>
+            <button class="filter-button" type="button" data-filter="active">进行中</button>
+            <button class="filter-button" type="button" data-filter="completed">已完成</button>
+          </div>
+        </div>
+
+        <ul class="todo-list" id="todo-list" aria-live="polite"></ul>
+        <div class="empty-state" id="empty-state" hidden>
+          <div class="empty-icon" aria-hidden="true">✧</div>
+          <h3 id="empty-title">还没有任务</h3>
+          <p id="empty-description">先添加一件小事，给今天一个轻盈的开始。</p>
+        </div>
+      </section>
+
+      <footer class="app-footer">
+        <span>本地保存 · 无需登录</span>
+        <span class="footer-mark" aria-hidden="true">●</span>
+        <span>保持专注，稳步向前</span>
+      </footer>
+    </main>
+    <script src="app.js" defer></script>
+  </body>
+</html>
+
