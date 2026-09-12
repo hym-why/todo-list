@@ -47,16 +47,22 @@
         </div>
 
         <form class="add-form" id="todo-form">
-          <label class="sr-only" for="todo-input">新任务</label>
-          <input
-            id="todo-input"
-            name="todo"
-            type="text"
-            maxlength="120"
-            autocomplete="off"
-            placeholder="例如：完成课程作业"
-            required
-          />
+          <div class="title-field">
+            <label class="sr-only" for="todo-input">新任务</label>
+            <input
+              id="todo-input"
+              name="todo"
+              type="text"
+              maxlength="120"
+              autocomplete="off"
+              placeholder="例如：完成课程作业"
+              required
+            />
+          </div>
+          <label class="date-field" for="todo-due-date">
+            <span>截止日期</span>
+            <input id="todo-due-date" name="dueDate" type="date" />
+          </label>
           <button class="primary-button" type="submit">
             <span aria-hidden="true">＋</span>
             添加任务
