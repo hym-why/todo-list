@@ -8,6 +8,7 @@ const state = {
 const elements = {
   form: document.querySelector("#todo-form"),
   input: document.querySelector("#todo-input"),
+  dueDate: document.querySelector("#todo-due-date"),
   list: document.querySelector("#todo-list"),
   emptyState: document.querySelector("#empty-state"),
   emptyTitle: document.querySelector("#empty-title"),
@@ -28,6 +29,7 @@ elements.form.addEventListener("submit", (event) => {
     id: createId(),
     title,
     completed: false,
+    dueDate: elements.dueDate.value || null,
     createdAt: new Date().toISOString(),
   });
 
@@ -88,7 +90,8 @@ function render() {
 
 function createTodoElement(todo) {
   const item = document.createElement("li");
-  item.className = `todo-item${todo.completed ? " is-complete" : ""}`;
+  const overdue = isOverdue(todo);
+  item.className = `todo-item${todo.completed ? " is-complete" : ""}${overdue ? " is-overdue" : ""}`;
   item.dataset.id = todo.id;
 
   const toggleButton = document.createElement("button");
@@ -102,6 +105,20 @@ function createTodoElement(todo) {
   text.className = "todo-text";
   text.textContent = todo.title;
 
+  const content = document.createElement("div");
+  content.className = "todo-content";
+  content.append(text);
+
+  if (todo.dueDate) {
+    const meta = document.createElement("div");
+    meta.className = "todo-meta";
+    const dueDate = document.createElement("time");
+    dueDate.dateTime = todo.dueDate;
+    dueDate.textContent = `截止 ${formatDueDate(todo.dueDate)}${overdue ? " · 已逾期" : ""}`;
+    meta.append(dueDate);
+    content.append(meta);
+  }
+
   const deleteButton = document.createElement("button");
   deleteButton.className = "delete-button";
   deleteButton.type = "button";
@@ -109,7 +126,7 @@ function createTodoElement(todo) {
   deleteButton.setAttribute("aria-label", `删除任务：${todo.title}`);
   deleteButton.textContent = "删除";
 
-  item.append(toggleButton, text, deleteButton);
+  item.append(toggleButton, content, deleteButton);
   return item;
 }
 
@@ -142,6 +159,21 @@ function loadTodos() {
 
 function saveTodos() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state.todos));
+}
+
+function isOverdue(todo) {
+  return Boolean(todo.dueDate && !todo.completed && todo.dueDate < getTodayISO());
+}
+
+function formatDueDate(value) {
+  const date = new Date(`${value}T00:00:00`);
+  return new Intl.DateTimeFormat("zh-CN", { month: "short", day: "numeric" }).format(date);
+}
+
+function getTodayISO() {
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60 * 1000;
+  return new Date(now.getTime() - offset).toISOString().slice(0, 10);
 }
 
 function createId() {
